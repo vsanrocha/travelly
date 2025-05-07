@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\TravelRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,9 +16,12 @@ class TravelRequestFactory extends Factory
      */
     public function definition(): array
     {
+
+        $user = User::where('email', 'test@travelly.com')->first() ?? User::first();
+
         return [
-            'user_id' => User::factory(),
-            'requester_name' => $this->faker->name(),
+            'user_id' => $user ? $user->id : User::factory(),
+            'requester_name' => $user ? $user->name : $this->faker->name(),
             'destination' => $this->faker->city(),
             'departure_date' => $this->faker->date(),
             'return_date' => $this->faker->date(),
