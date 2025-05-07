@@ -21,7 +21,7 @@ class TravelRequestPolicy
      */
     public function view(User $user, TravelRequest $travelRequest): bool
     {
-        return false;
+        return $user->id === $travelRequest->user_id;
     }
 
     /**
@@ -37,7 +37,7 @@ class TravelRequestPolicy
      */
     public function update(User $user, TravelRequest $travelRequest): bool
     {
-        return false;
+        return $user->id === $travelRequest->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class TravelRequestPolicy
      */
     public function delete(User $user, TravelRequest $travelRequest): bool
     {
-        return false;
+        return $user->id === $travelRequest->user_id;
     }
 
     /**
