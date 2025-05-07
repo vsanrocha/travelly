@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import Button from './components/ui/button/Button.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
+      <div class="flex gap-2 w-10 h-10 color-red-500"><Button>Button</Button></div>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
