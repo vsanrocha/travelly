@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout>
+  <AppLayout>
     <div class="container mx-auto py-8">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">Solicitações de Viagem</h2>
@@ -26,15 +26,15 @@
         <DialogContent>
           <template #title>Nova Solicitação de Viagem</template>
           <TravelForm @submit="handleCreate" />
-        <DialogContent>
-      <Dialog>
+        </DialogContent>
+      </Dialog>
     </div>
-  </DefaultLayout>
+  </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AppLayout from '@/layouts/AppLayout.vue'
 import TravelTable from '@/components/travel/TravelTable.vue'
 import TravelForm from '@/components/travel/TravelForm.vue'
 import { useTravelStore } from '@/store/travel'

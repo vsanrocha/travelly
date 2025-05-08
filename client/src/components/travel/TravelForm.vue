@@ -1,16 +1,16 @@
 <template>
   <form @submit.prevent="onSubmit" class="space-y-4">
     <div>
-      <Label for="destination">Destino<Label>
+      <Label for="destination">Destino</Label>
       <Input id="destination" v-model="form.destination" type="text" required />
     </div>
     <div class="flex gap-4">
       <div class="flex-1">
-        <Label for="departure_date">Data de Saída<Label>
+        <Label for="departure_date">Data de Saída</Label>
         <Input id="departure_date" v-model="form.departure_date" type="date" required />
       </div>
       <div class="flex-1">
-        <Label for="return_date">Data de Retorno<Label>
+        <Label for="return_date">Data de Retorno</Label>
         <Input id="return_date" v-model="form.return_date" type="date" required />
       </div>
     </div>
