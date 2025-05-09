@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Dialog } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -41,23 +39,12 @@ function openDetails(requestId: number) {
   showDetailsDialog.value = true
 }
 
-async function cancelRequest(requestId: number) {
-  try {
-    await travelStore.updateStatus(requestId, 'cancelled')
-    // Opcional: mostrar mensagem de sucesso
-  } catch (error) {
-    console.error('Erro ao cancelar solicitação:', error)
-    // Opcional: mostrar mensagem de erro
-  }
+function cancelRequest(requestId: number) {
+  travelStore.updateStatus(requestId, 'cancelled')
+
 }
 async function aproveRequest(requestId: number) {
-  try {
-    await travelStore.updateStatus(requestId, 'approved')
-    // Opcional: mostrar mensagem de sucesso
-  } catch (error) {
-    console.error('Erro ao cancelar solicitação:', error)
-    // Opcional: mostrar mensagem de erro
-  }
+  travelStore.updateStatus(requestId, 'approved')
 }
 </script>
 
@@ -123,8 +110,8 @@ async function aproveRequest(requestId: number) {
                     @click="cancelRequest(req.id)"
                     variant="ghost"
                     size="sm"
-                    :disabled="req.status !== 'approved'"
-                    :class="{ 'opacity-50 cursor-not-allowed': req.status !== 'approved' }"
+                    :disabled="req.status === 'cancelled'"
+                    :class="{ 'opacity-50 cursor-not-allowed': req.status === 'cancelled' }"
                   >
                     Cancelar solicitação
                   </Button>
