@@ -1,45 +1,41 @@
-# client
+# Frontend – Travelly
 
-This template should help get you started developing with Vue 3 in Vite.
+## 📝 Descrição
+SPA desenvolvida em Vue 3, com TypeScript, Pinia para gerenciamento de estado, Vue Router para navegação e VeeValidate para validação de formulários.
 
-## Recommended IDE Setup
+## ⚙️ Setup local
+1. Instale as dependências:
+   ```bash
+   pnpm install
+   ```
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 🏃 Scripts
+- `pnpm dev` — Inicia o servidor de desenvolvimento
+- `pnpm build` — Gera build de produção
+- `pnpm lint` — Lint do código com ESLint
+- `pnpm format` — Formata o código com Prettier
 
-## Type Support for `.vue` Imports in TS
+## 🐳 Docker
+- Para subir o frontend em container:
+  ```bash
+  docker-compose up
+  ```
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## 🖥️ Estrutura de Pastas
+- `components/` – Componentes reutilizáveis da interface
+- `pages/` – Páginas principais da aplicação
+- `layouts/` – Layouts globais e wrappers
+- `store/` – Stores Pinia para estado global
 
-## Customize configuration
+## 🎨 Estilização
+- UI baseada em Shadcn Vue
+- Tailwind CSS para utilitários de estilo
+- ESLint + Prettier para padronização e qualidade de código
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 🔐 Autenticação
+- Login realizado via formulário, autenticação com token JWT/Sanctum
+- O token é armazenado no `localStorage` e enviado via header `Authorization` em cada requisição autenticada
 
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-pnpm test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+## 🔗 Integração com API
+- Axios configurado em `src/utils/axios.ts`
+- Interceptors para adicionar token de autenticação e tratar respostas de erro
