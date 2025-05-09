@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\SignInRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -15,22 +16,14 @@ class AuthController extends Controller
     /**
      * Sign up a new user
      */
-    public function signUp(Request $request)
+    public function signUp(SignUpRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        $data = $request->validated();
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
 
         $token = $user->createToken('api-token')->plainTextToken;
