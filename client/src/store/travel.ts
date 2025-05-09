@@ -20,9 +20,13 @@ export const useTravelStore = defineStore('travel', {
       this.requests.push(data)
     },
     async updateStatus(id: number, status: string) {
-      const { data } = await axios.patch(`/travel-requests/${id}`, { status })
+      const { data } = await axios.patch(`/travel-requests/${id}/status`, { status })
       const idx = this.requests.findIndex(r => r.id === id)
       if (idx !== -1) this.requests[idx] = data
+    },
+    async fetchById(id: number): Promise<TravelRequest> {
+      const { data } = await axios.get(`/travel-requests/${id}`)
+      return data
     },
   },
 })

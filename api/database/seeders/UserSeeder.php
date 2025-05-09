@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@travelly.com',
-                'password' => bcrypt('password'),
+                'password' => bcrypt('123456'),
             ]);
         }
     }
