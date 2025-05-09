@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\TravelRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreTravelRequest;
+use App\Http\Requests\UpdateTravelRequestStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\TravelRequestStatusChanged;
 
@@ -29,20 +31,15 @@ class TravelRequestController extends Controller
 		return $query->orderBy('created_at', 'desc')->get();
 	}
 
-	public function store(Request $request)
-	{
-		$data = $request->validate([
-			'destination' => 'required|string',
-			'departure_date' => 'required|date|after_or_equal:today',
-			'return_date' => 'required|date|after_or_equal:departure_date',
-		]);
+    public function store(StoreTravelRequest $request)
+    {
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $data['requester_name'] = Auth::user()->name;
+        $data['status'] = 'requested';
 
-		$data['user_id'] = Auth::id();
-		$data['requester_name'] = Auth::user()->name;
-		$data['status'] = 'requested';
-
-		return TravelRequest::create($data);
-	}
+        return TravelRequest::create($data);
+    }
 
 	public function show(TravelRequest $travelRequest)
 	{
@@ -50,27 +47,27 @@ class TravelRequestController extends Controller
 		return $travelRequest;
 	}
 
-	public function updateStatus(Request $request, TravelRequest $travelRequest)
-	{
-		$this->authorize('update', $travelRequest);
+    public function updateStatus(UpdateTravelRequestStatus $request, TravelRequest $travelRequest)
+    {
+        $this->authorize('update', $travelRequest);
 
-		$request->validate(['status' => 'required|in:approved,cancelled']);
+        $status = $request->validated()['status'];
 
-		if ($travelRequest->status === 'cancelled') {
-			return response()->json(['error' => 'Pedido já cancelado'], 400);
-		}
+        if ($travelRequest->status === 'cancelled') {
+            return response()->json(['error' => 'Pedido já cancelado'], 400);
+        }
 
-		if (
-			$travelRequest->status === 'approved' &&
-			$request->status === 'cancelled' &&
-			now()->greaterThan($travelRequest->departure_date)
-		) {
-			return response()->json(['error' => 'Não é possível cancelar após a data de ida'], 400);
-		}
+        if (
+            $travelRequest->status === 'approved' &&
+            $status === 'cancelled' &&
+            now()->greaterThan($travelRequest->departure_date)
+        ) {
+            return response()->json(['error' => 'Não é possível cancelar após a data de ida'], 400);
+        }
 
-		$travelRequest->status = $request->status;
-		$travelRequest->save();
+        $travelRequest->status = $status;
+        $travelRequest->save();
 
-		return $travelRequest;
-	}
+        return $travelRequest;
+    }
 }
