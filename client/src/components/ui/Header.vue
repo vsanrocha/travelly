@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import IconPerson from '@/components/icons/IconPerson.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -34,29 +35,22 @@ function logout() {
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Button
-            class="rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 p-2 focus:outline-none"
+            class="rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 p-2 focus:outline-none"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-gray-600 dark:text-gray-300"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
+           <IconPerson />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem @click="goProfile">Profile</DropdownMenuItem>
-          <DropdownMenuItem @click="goSettings">Settings</DropdownMenuItem>
+          <DropdownMenuItem @click="goProfile"
+            ><Button variant="ghost">Profile</Button></DropdownMenuItem
+          >
+          <DropdownMenuItem @click="goSettings"
+            ><Button variant="ghost">Settings</Button></DropdownMenuItem
+          >
           <DropdownMenuSeparator />
-          <DropdownMenuItem @click="logout" class="text-red-600">Logout</DropdownMenuItem>
+          <DropdownMenuItem @click="logout" class="text-red-600"
+            ><Button variant="ghost">Logout</Button></DropdownMenuItem
+          >
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
