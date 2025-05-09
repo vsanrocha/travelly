@@ -14,10 +14,11 @@ export const useTravelStore = defineStore('travel', {
     loading: false,
   }),
   actions: {
-    async fetchAll() {
+    async fetchAll(params?: Record<string, string>) {
+      console.log(params)
       this.loading = true
       try {
-        const { data } = await axios.get('/travel-requests')
+        const { data } = await axios.get('/travel-requests', { params })
         this.requests = data
       } catch (error) {
         console.error('Erro ao buscar solicitações:', error)
