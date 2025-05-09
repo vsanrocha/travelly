@@ -45,51 +45,53 @@ async function updateStatus(id: number, status: string) {
 <template>
   <AppLayout>
     <div class="container mx-auto py-8">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
         <h2 class="text-2xl font-bold">Solicitações de Viagem</h2>
-        <Button @click="showForm = true">Nova Solicitação</Button>
+        <Button class="w-full sm:w-auto" @click="showForm = true">Nova Solicitação</Button>
       </div>
-      <div class="flex flex-wrap gap-4 mb-6 items-end">
-        <div>
+      <div class="flex flex-col sm:flex-row flex-wrap gap-4 mb-6 items-end">
+        <div class="w-full sm:w-auto">
           <label class="block text-sm font-medium mb-1">Status</label>
-          <select v-model="filters.status" @change="fetchFiltered" class="border rounded px-2 py-1">
+          <select v-model="filters.status" @change="fetchFiltered" class="border rounded px-2 py-1 w-full">
             <option :value="undefined">Todos</option>
             <option value="requested">Pendente</option>
             <option value="approved">Aprovado</option>
             <option value="cancelled">Cancelado</option>
           </select>
         </div>
-        <div>
+        <div class="w-full sm:w-auto">
           <label class="block text-sm font-medium mb-1">Data Inicial</label>
-          <input type="date" v-model="filters.start_date" @change="fetchFiltered" class="border rounded px-2 py-1" />
+          <input type="date" v-model="filters.start_date" @change="fetchFiltered" class="border rounded px-2 py-1 w-full" />
         </div>
-        <div>
+        <div class="w-full sm:w-auto">
           <label class="block text-sm font-medium mb-1">Data Final</label>
-          <input type="date" v-model="filters.end_date" @change="fetchFiltered" class="border rounded px-2 py-1" />
+          <input type="date" v-model="filters.end_date" @change="fetchFiltered" class="border rounded px-2 py-1 w-full" />
         </div>
-        <div>
+        <div class="w-full sm:w-auto">
           <label class="block text-sm font-medium mb-1">Destino</label>
-          <input type="text" v-model="filters.destination" @input="fetchFiltered" placeholder="Destino" class="border rounded px-2 py-1" />
+          <input type="text" v-model="filters.destination" @input="fetchFiltered" placeholder="Destino" class="border rounded px-2 py-1 w-full" />
         </div>
-        <Button variant="secondary" @click="clearFilters">Limpar Filtros</Button>
+        <Button variant="secondary" class="w-full sm:w-auto" @click="clearFilters">Limpar Filtros</Button>
       </div>
-      <TravelTable :requests="travelStore.requests">
-        <template #actions="{ request }">
-          <Button
-            v-if="request.status === 'pending'"
-            size="sm"
-            variant="success"
-            class="mr-2"
-            @click="() => updateStatus(request.id, 'approved')"
-          >Aprovar</Button>
-          <Button
-            v-if="request.status === 'pending'"
-            size="sm"
-            variant="destructive"
-            @click="() => updateStatus(request.id, 'canceled')"
-          >Cancelar</Button>
-        </template>
-      </TravelTable>
+      <div class="overflow-x-auto">
+        <TravelTable :requests="travelStore.requests">
+          <template #actions="{ request }">
+            <Button
+              v-if="request.status === 'pending'"
+              size="sm"
+              variant="success"
+              class="mr-2"
+              @click="() => updateStatus(request.id, 'approved')"
+            >Aprovar</Button>
+            <Button
+              v-if="request.status === 'pending'"
+              size="sm"
+              variant="destructive"
+              @click="() => updateStatus(request.id, 'canceled')"
+            >Cancelar</Button>
+          </template>
+        </TravelTable>
+      </div>
       <Dialog v-model:open="showForm">
         <DialogContent>
           <template #title>Nova Solicitação de Viagem</template>
