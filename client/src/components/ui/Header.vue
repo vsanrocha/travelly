@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/auth'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+function goProfile() {
+  router.push('/profile')
+}
+function goSettings() {
+  router.push('/settings')
+}
+function logout() {
+  authStore.logout()
+  router.push('/login')
+}
+</script>
+
 <template>
   <header class="fixed top-0 left-0 w-full bg-white dark:bg-background shadow z-30">
     <div class="flex items-center justify-between h-16 px-6">
@@ -35,30 +62,3 @@
     </div>
   </header>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-
-const router = useRouter()
-const authStore = useAuthStore()
-
-function goProfile() {
-  router.push('/profile')
-}
-function goSettings() {
-  router.push('/settings')
-}
-function logout() {
-  authStore.logout()
-  router.push('/login')
-}
-</script>

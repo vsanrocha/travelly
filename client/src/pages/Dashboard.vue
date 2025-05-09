@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import AppLayout from '@/layouts/AppLayout.vue'
+import TravelTable from '@/components/travel/TravelTable.vue'
+import TravelForm from '@/components/travel/TravelForm.vue'
+import { useTravelStore } from '@/store/travel'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+
+const travelStore = useTravelStore()
+const showForm = ref(false)
+
+onMounted(() => {
+  travelStore.fetchAll()
+})
+
+async function handleCreate(payload: any) {
+  await travelStore.create(payload)
+  showForm.value = false
+}
+
+async function updateStatus(id: number, status: string) {
+  await travelStore.updateStatus(id, status)
+}
+</script>
+
 <template>
   <AppLayout>
     <div class="container mx-auto py-8">
@@ -31,29 +57,3 @@
     </div>
   </AppLayout>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import AppLayout from '@/layouts/AppLayout.vue'
-import TravelTable from '@/components/travel/TravelTable.vue'
-import TravelForm from '@/components/travel/TravelForm.vue'
-import { useTravelStore } from '@/store/travel'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
-
-const travelStore = useTravelStore()
-const showForm = ref(false)
-
-onMounted(() => {
-  travelStore.fetchAll()
-})
-
-async function handleCreate(payload: any) {
-  await travelStore.create(payload)
-  showForm.value = false
-}
-
-async function updateStatus(id: number, status: string) {
-  await travelStore.updateStatus(id, status)
-}
-</script>

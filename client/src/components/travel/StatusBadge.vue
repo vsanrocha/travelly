@@ -1,9 +1,3 @@
-<template>
-  <Badge :variant="variant">
-    {{ statusLabel }}
-  </Badge>
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Badge } from '@/components/ui/badge'
@@ -32,3 +26,9 @@ const statusLabel = computed(() => {
   }
 })
 </script>
+
+<template>
+  <Badge :variant="variant">
+    {{ statusLabel }}
+  </Badge>
+</template>

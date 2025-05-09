@@ -4,16 +4,25 @@ import type { TravelRequest } from '@/types/TravelRequest'
 
 interface TravelState {
   requests: TravelRequest[]
+  loading: boolean
 }
 
 export const useTravelStore = defineStore('travel', {
   state: (): TravelState => ({
     requests: [],
+    loading: false,
   }),
   actions: {
     async fetchAll() {
-      const { data } = await axios.get('/travel-requests')
-      this.requests = data
+      this.loading = true
+      try {
+        const { data } = await axios.get('/travel-requests')
+        this.requests = data
+      } catch (error) {
+        console.error('Erro ao buscar solicitações:', error)
+      } finally {
+        this.loading = false
+      }
     },
     async create(payload: Partial<TravelRequest>) {
       const { data } = await axios.post('/travel-requests', payload)

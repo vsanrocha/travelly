@@ -1,56 +1,3 @@
-<template>
-  <Dialog :open="open" @update:open="$emit('update:open', $event)">
-    <DialogContent class="sm:max-w-[425px]">
-      <DialogHeader>
-        <DialogTitle>Detalhes da Solicitação</DialogTitle>
-        <DialogDescription v-if="!loading">
-          Informações detalhadas da sua solicitação de viagem.
-        </DialogDescription>
-        <DialogDescription v-else>
-          Carregando detalhes...
-        </DialogDescription>
-      </DialogHeader>
-
-
-      <div v-if="error" class="py-4 text-center text-red-500">
-        Não foi possível carregar os detalhes da solicitação.
-      </div>
-
-      <div v-else class="grid gap-4 py-4">
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label class="text-right">Solicitante:</Label>
-          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
-          <span v-else class="col-span-3">{{ requestDetails.requester_name }}</span>
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label class="text-right">Destino:</Label>
-          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
-          <span v-else class="col-span-3">{{ requestDetails.destination }}</span>
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label class="text-right">Saída:</Label>
-          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
-          <span v-else class="col-span-3">{{ requestDetails.departure_date }}</span>
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label class="text-right">Retorno:</Label>
-          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
-          <span v-else class="col-span-3">{{ requestDetails.return_date }}</span>
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label class="text-right">Status:</Label>
-          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
-          <StatusBadge v-else :status="requestDetails.status" class="col-span-3" />
-        </div>
-      </div>
-
-      <DialogFooter>
-        <Button @click="$emit('update:open', false)">Fechar</Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
-</template>
-
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { TravelRequest } from '@/types/TravelRequest'
@@ -103,3 +50,56 @@ watch(
   { immediate: true }
 )
 </script>
+
+<template>
+  <Dialog :open="open" @update:open="$emit('update:open', $event)">
+    <DialogContent class="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Detalhes da Solicitação</DialogTitle>
+        <DialogDescription v-if="!loading">
+          Informações detalhadas da sua solicitação de viagem.
+        </DialogDescription>
+        <DialogDescription v-else>
+          Carregando detalhes...
+        </DialogDescription>
+      </DialogHeader>
+
+
+      <div v-if="error" class="py-4 text-center text-red-500">
+        Não foi possível carregar os detalhes da solicitação.
+      </div>
+
+      <div v-else class="grid gap-4 py-4">
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label class="text-right">Solicitante:</Label>
+          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
+          <span v-else class="col-span-3">{{ requestDetails.requester_name }}</span>
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label class="text-right">Destino:</Label>
+          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
+          <span v-else class="col-span-3">{{ requestDetails.destination }}</span>
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label class="text-right">Saída:</Label>
+          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
+          <span v-else class="col-span-3">{{ requestDetails.departure_date }}</span>
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label class="text-right">Retorno:</Label>
+          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
+          <span v-else class="col-span-3">{{ requestDetails.return_date }}</span>
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label class="text-right">Status:</Label>
+          <Skeleton v-if="loading" class="h-4 w-full col-span-3" />
+          <StatusBadge v-else :status="requestDetails.status" class="col-span-3" />
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button @click="$emit('update:open', false)">Fechar</Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+</template>
