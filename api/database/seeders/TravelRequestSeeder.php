@@ -21,8 +21,16 @@ class TravelRequestSeeder extends Seeder
             $this->call(UserSeeder::class);
         }
 
-        TravelRequest::factory()
-            ->count(5)
-            ->create();
+        $statuses = [
+            'requested',
+            'approved',
+            'cancelled'
+        ];
+
+        foreach ($statuses as $status) {
+            TravelRequest::factory()->create([
+                'status' => $status
+            ]);
+        }
     }
 }

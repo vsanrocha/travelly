@@ -13,19 +13,21 @@ class TravelRequestFactory extends Factory
 {
     /**
      * Define the model's default state.
+     *
+     * @param  array  $attributes
+     * @return array
      */
-    public function definition(): array
+    public function definition(array $attributes = []): array
     {
-
         $user = User::where('email', 'test@travelly.com')->first() ?? User::first();
 
         return [
             'user_id' => $user ? $user->id : User::factory(),
             'requester_name' => $user ? $user->name : $this->faker->name(),
             'destination' => $this->faker->city(),
-            'departure_date' => $this->faker->date(),
-            'return_date' => $this->faker->date(),
-            'status' => 'requested',
+            'departure_date' => $this->faker->dateTimeBetween('now', '+6 months')->format('Y-m-d'),
+            'return_date' => $this->faker->dateTimeBetween('+1 week', '+1 year')->format('Y-m-d'),
+            'status' => $attributes['status'] ?? 'requested',
         ];
     }
 }

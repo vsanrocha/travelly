@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import type { TravelRequest } from '@/types/TravelRequest'
 import StatusBadge from './StatusBadge.vue'
 import TravelRequestDialog from './TravelRequestDialog.vue'
+import IconSettings from '@/components/icons/IconSettings.vue'
 import { useTravelStore } from '@/store/travel'
 import {
   Table,
@@ -10,12 +11,18 @@ import {
   TableBody,
   TableRow,
   TableHead,
-  TableCell
+  TableCell,
 } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Dialog } from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
 
 const props = defineProps<{ requests: TravelRequest[] }>()
 
@@ -32,6 +39,25 @@ onMounted(() => {
 function openDetails(requestId: number) {
   selectedRequestId.value = requestId
   showDetailsDialog.value = true
+}
+
+async function cancelRequest(requestId: number) {
+  try {
+    await travelStore.updateStatus(requestId, 'cancelled')
+    // Opcional: mostrar mensagem de sucesso
+  } catch (error) {
+    console.error('Erro ao cancelar solicitação:', error)
+    // Opcional: mostrar mensagem de erro
+  }
+}
+async function aproveRequest(requestId: number) {
+  try {
+    await travelStore.updateStatus(requestId, 'approved')
+    // Opcional: mostrar mensagem de sucesso
+  } catch (error) {
+    console.error('Erro ao cancelar solicitação:', error)
+    // Opcional: mostrar mensagem de erro
+  }
 }
 </script>
 
@@ -71,16 +97,45 @@ function openDetails(requestId: number) {
           <TableCell>
             <StatusBadge :status="req.status" />
           </TableCell>
-          <TableCell @click.stop>
+          <TableCell @click.stop class="flex items-center space-x-2">
             <slot name="actions" :request="req" />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" class="ml-2">
+                  <IconSettings class="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <Button
+                    @click="aproveRequest(req.id)"
+                    variant="ghost"
+                    size="sm"
+                    :disabled="req.status !== 'requested'"
+                    :class="{ 'opacity-50 cursor-not-allowed': req.status !== 'requested' }"
+                  >
+                    Aprovar
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Button
+                    @click="cancelRequest(req.id)"
+                    variant="ghost"
+                    size="sm"
+                    :disabled="req.status !== 'approved'"
+                    :class="{ 'opacity-50 cursor-not-allowed': req.status !== 'approved' }"
+                  >
+                    Cancelar solicitação
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </TableCell>
         </TableRow>
       </TableBody>
     </Table>
 
-    <TravelRequestDialog
-      v-model:open="showDetailsDialog"
-      :request-id="selectedRequestId"
-    />
+    <TravelRequestDialog v-model:open="showDetailsDialog" :request-id="selectedRequestId" />
   </div>
 </template>

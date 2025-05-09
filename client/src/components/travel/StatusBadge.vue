@@ -8,10 +8,10 @@ const variant = computed(() => {
   switch (props.status) {
     case 'approved':
       return 'success'
-    case 'canceled':
+    case 'cancelled':
       return 'destructive'
     default:
-      return 'secondary'
+      return 'default'
   }
 })
 
@@ -19,7 +19,7 @@ const statusLabel = computed(() => {
   switch (props.status) {
     case 'approved':
       return 'Aprovada'
-    case 'canceled':
+    case 'cancelled':
       return 'Cancelada'
     default:
       return 'Pendente'
