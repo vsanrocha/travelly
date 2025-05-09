@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\TravelRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\IndexTravelRequest;
 use App\Http\Requests\StoreTravelRequest;
 use App\Http\Requests\UpdateTravelRequestStatus;
 use Illuminate\Support\Facades\Auth;
@@ -12,24 +13,25 @@ use App\Notifications\TravelRequestStatusChanged;
 
 class TravelRequestController extends Controller
 {
-	public function index(Request $request)
-	{
-		$query = TravelRequest::where('user_id', Auth::id());
+	public function index(IndexTravelRequest $request)
+    {
+        $query = TravelRequest::where('user_id', Auth::id());
+        $data = $request->validated();
 
-		if ($request->has('status')) {
-			$query->where('status', $request->status);
-		}
+        if (isset($data['status'])) {
+            $query->where('status', $data['status']);
+        }
 
-		if ($request->has(['start_date', 'end_date'])) {
-			$query->whereBetween('departure_date', [$request->start_date, $request->end_date]);
-		}
+        if (isset($data['start_date']) && isset($data['end_date'])) {
+            $query->whereBetween('departure_date', [$data['start_date'], $data['end_date']]);
+        }
 
-		if ($request->has('destination')) {
-			$query->where('destination', 'like', "%{$request->destination}%");
-		}
+        if (isset($data['destination'])) {
+            $query->where('destination', 'like', "%{$data['destination']}%");
+        }
 
-		return $query->orderBy('created_at', 'desc')->get();
-	}
+        return $query->orderBy('created_at', 'desc')->get();
+    }
 
     public function store(StoreTravelRequest $request)
     {
